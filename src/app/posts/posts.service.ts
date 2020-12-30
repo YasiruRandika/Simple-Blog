@@ -8,6 +8,7 @@ import { map } from "rxjs/operators";
 export class PostService {
   private posts : Post[] = [];
   private postUpdated = new Subject<Post[]>();
+  private postUpd = new Subject<Post>();
 
   constructor(private http:HttpClient) {}
 
@@ -55,5 +56,22 @@ export class PostService {
         this.posts = updatedPosts;
         this.postUpdated.next([...this.posts]);
       });
+  }
+
+  getPost(id : string) {
+    this.http.get<{message:string, post:any}>('http://localhost:3000/api/posts' + id)
+    .pipe(map((postData) => {
+      return postData.post.map(post => {
+        return {
+          title: post.title,
+          content:post.content,
+          id: post._id
+        }
+      })
+    }))
+    .subscribe((transformedPost) => {
+      this.posts = transformedPost;
+      this.postUpd.next(transformedPost);
+    });
   }
 }
