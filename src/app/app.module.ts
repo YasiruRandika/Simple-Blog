@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from "@angular/forms";
+import { HttpClientModule } from "@angular/common/http";
 
 import { MatButtonModule } from "@angular/material/button";
 import { MatInputModule } from "@angular/material/input";
@@ -33,6 +34,7 @@ import { PostService } from './posts/posts.service';
     MatCardModule,
     MatToolbarModule,
     MatExpansionModule,
+    HttpClientModule
   ],
   providers: [PostService],
   bootstrap: [AppComponent]

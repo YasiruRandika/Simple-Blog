@@ -16,7 +16,7 @@ export class PostListComponent implements OnInit {
   private postsSub : Subscription = new Subscription();
 
   ngOnInit(): void {
-    this.posts = this.postService.getPosts();
+    this.postService.getPosts();
     this.postsSub = this.postService.getPostUpdateListner().subscribe((posts:Post[]) => {
       this.posts = posts;
     });
@@ -24,6 +24,10 @@ export class PostListComponent implements OnInit {
 
   ngOnDestroy() {
     this.postsSub.unsubscribe();
+  }
+
+  onDelete(postId:string) {
+    this.postService.deletePost(postId);
   }
 
   /*posts = [
