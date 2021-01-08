@@ -15,7 +15,12 @@ export class PostCreateComponent implements OnInit {
   enteredContent = '';
   private mode = 'create';
   isLoading = false;
-  public form : FormGroup;
+  public form : FormGroup = new FormGroup({
+    'title': new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
+    'content': new FormControl(null, {validators:[Validators.required]}),
+    'image' : new FormControl(null, {validators: [Validators.required],
+    asyncValidators : [mimeType]})
+  });;
   imagePreview : string | null | ArrayBuffer = '';
   private postId : string = '';
   post : Post = {title: '', content : '', id:'', imagePath:''};
@@ -26,12 +31,6 @@ export class PostCreateComponent implements OnInit {
   constructor(public postService:PostService, public route : ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.form = new FormGroup({
-      'title': new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
-      'content': new FormControl(null, {validators:[Validators.required]}),
-      'image' : new FormControl(null, {validators: [Validators.required],
-      asyncValidators : [mimeType]})
-    });
     this.route.paramMap.subscribe((paraMap: ParamMap) => {
       if(paraMap.has('postId')) {
         this.mode = 'edit';

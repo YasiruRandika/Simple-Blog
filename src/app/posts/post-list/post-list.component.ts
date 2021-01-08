@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Post } from '../post.model';
 import { PostService } from '../posts.service';
 import { Subscription} from "rxjs";
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-post-list',
@@ -15,12 +16,17 @@ export class PostListComponent implements OnInit {
   posts: Post[] = [];
   private postsSub : Subscription = new Subscription();
   isLoding = false;
+  totalPosts = 10;
+  postsPerPage = 2;
+  currentPage = 1;
+  postSizeOptions = [2, 5, 10];
 
   ngOnInit(): void {
     this.isLoding = true;
-    this.postService.getPosts();
-    this.postsSub = this.postService.getPostUpdateListner().subscribe((posts:Post[]) => {
-      this.posts = posts;
+    this.postService.getPosts(this.postsPerPage, this.currentPage);
+    this.postsSub = this.postService.getPostUpdateListner().subscribe((postData : {posts : Post[], maxPosts: number}) => {
+      this.posts = postData.posts;
+      this.totalPosts = postData.maxPosts;
     });
     this.isLoding = false;
   }
@@ -30,7 +36,15 @@ export class PostListComponent implements OnInit {
   }
 
   onDelete(postId:string) {
-    this.postService.deletePost(postId);
+    this.postService.deletePost(postId).subscribe(() => {
+      this.postService.getPosts(this.postsPerPage, this.currentPage);
+    });
+  }
+
+  onChangedPage(pageData: PageEvent) {
+    this.currentPage = pageData.pageIndex + 1;
+    this.postsPerPage = pageData.pageSize;
+    this.postService.getPosts(this.postsPerPage, this.currentPage);
   }
 
   /*posts = [
