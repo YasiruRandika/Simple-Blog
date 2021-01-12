@@ -30,11 +30,15 @@ export class PostListComponent implements OnInit {
     this.postsSub = this.postService.getPostUpdateListner().subscribe((postData : {posts : Post[], maxPosts: number}) => {
       this.posts = postData.posts;
       this.totalPosts = postData.maxPosts;
+      console.log(this.posts);
     });
     this.isLoding = false;
+    console.log("User id" + this.userId);
     this.userIsAuthenticated = this.authService.getAuthStatus();
+    this.userId = this.authService.getUserId();
     this.authSubscription = this.authService.getAuthStatusListner().subscribe(isAuthenticated => {
       this.userIsAuthenticated = isAuthenticated;
+      console.log(this.userIsAuthenticated);
       this.userId = this.authService.getUserId();
     });
   }
