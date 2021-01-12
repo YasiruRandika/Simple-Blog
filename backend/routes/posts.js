@@ -72,11 +72,17 @@ router.put('/:id', authorization, multer({storage : storage}).single("image"), (
     imagePath : imagePath
   });
 
-  Post.updateOne({ _id: req.params.id }, post).then(result => {
+  Post.updateOne({ _id: req.params.id, creator : req.userData.userId }, post).then(result => {
+    if(result.nModified > 0) {
     res.status(200).json({
       message: "Update successful!",
       imagePath : result.imagePath
   });
+} else {
+  res.status(401).json({
+    message:'Authorization Failed'
+  })
+}
   });
 })
 
@@ -85,7 +91,8 @@ router.post("", authorization, multer({storage : storage}).single("image"),(req,
   const post = new Post({
     title : req.body.title,
     content : req.body.content,
-    imagePath : url +"/images/" + req.file.filename
+    imagePath : url +"/images/" + req.file.filename,
+    creator: req.userData.userId
   });
 
   post.save()
@@ -103,9 +110,13 @@ router.post("", authorization, multer({storage : storage}).single("image"),(req,
 });
 
 router.delete("/:id", authorization, (req, res, next) => {
-  Post.deleteOne({ _id: req.params.id }).then(result => {
+  Post.deleteOne({ _id: req.params.id, creator : req.userData.userId }).then(result => {
     console.log(result);
+    if(result.n > 0) {
     res.status(200).json({ message: "Post deleted!" });
+    } else {
+      res.status(401).json({ message: "Auth Failed" });
+    }
   });
 });
 

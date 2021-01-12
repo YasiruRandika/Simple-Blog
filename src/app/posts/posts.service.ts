@@ -15,7 +15,7 @@ export class PostService {
   getPosts(postsPerPage : number, currentPage:number) {
     const queryParmas = `?pageSize=${postsPerPage}&page=${currentPage}`
 
-    this.http.get<{message:string, posts:{_id:string, title:string, content:string, imagePath:string}[], maxPosts : number}>('http://localhost:3000/api/posts' + queryParmas)
+    this.http.get<{message:string, posts:{_id:string, title:string, content:string, imagePath:string, creator : string}[], maxPosts : number}>('http://localhost:3000/api/posts' + queryParmas)
     .pipe(map((postData) => {
       return {
       posts : postData.posts.map(post => {
@@ -23,7 +23,8 @@ export class PostService {
           title: post.title,
           content:post.content,
           id: post._id,
-          imagePath : post.imagePath
+          imagePath : post.imagePath,
+          creator : post.creator
         }
       }), maxPosts : postData.maxPosts};
     }))
