@@ -8,7 +8,7 @@ import { AuthData } from "./authData.model";
 export class AuthService{
   constructor(private http : HttpClient, private router : Router){}
 
-  private token : string = "";
+  private token : string | null  = null;
   private authStatusListener = new Subject<boolean>();
   authStatus = false;
   private tokenTimer : any;
@@ -18,7 +18,9 @@ export class AuthService{
     const authData : AuthData = {email : email, password : password};
     this.http.post("http://localhost:3000/api/user/signup", authData)
     .subscribe(response => {
-      console.log(response);
+      this.router.navigate(['/']);
+    }, error => {
+      this.authStatusListener.next(false);
     })
   }
 
@@ -37,6 +39,8 @@ export class AuthService{
         this.saveDate(response.token, expirationDate, response.userId);
         this.router.navigate(['/']);
       }
+    }, error=> {
+      this.authStatusListener.next(false);
     })
   }
 
