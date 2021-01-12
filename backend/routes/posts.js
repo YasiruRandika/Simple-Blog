@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const postController = require('../controllers/post');
 const authorization = require('../middleware/check-auth');
-const fileExtract = require('../middleware/file');
+const extractFile = require('../middleware/file');
 
 router.get('', postController.getPosts);
 
-router.put('/:id', authorization, fileExtract, postController.updatePost);
+router.put('/:id', authorization, extractFile, postController.updatePost);
 
-router.post("", authorization, fileExtract, postController.createPost);
+router.post("", authorization, extractFile, postController.createPost);
 
 router.delete("/:id", authorization, postController.deletePost);
 
