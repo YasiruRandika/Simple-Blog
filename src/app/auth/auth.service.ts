@@ -34,7 +34,7 @@ export class AuthService{
         const now = new Date();
         this.userId = response.userId;
         const expirationDate = new Date(now.getTime() + response.expiresIn * 1000);
-        this.saveDate(response.token, expirationDate, userId);
+        this.saveDate(response.token, expirationDate, response.userId);
         this.router.navigate(['/']);
       }
     })
@@ -55,6 +55,7 @@ export class AuthService{
         const expiresIn = authInformation.expirationDate.getTime() - now.getTime();
         this.token = authInformation.token;
         this.authStatus = true;
+        this.userId = authInformation.userId;
         this.setAuthTimer(expiresIn / 1000);
         this.authStatusListener.next(true);
       }
@@ -85,9 +86,10 @@ export class AuthService{
   getAuthData() {
     const token = localStorage.getItem("token");
     const expirationDate = localStorage.getItem("expiration");
+    const userId = localStorage.getItem("userId");
 
     if(token && expirationDate) {
-      return {token : token, expirationDate : new Date(expirationDate)}
+      return {token : token, expirationDate : new Date(expirationDate), userId : userId}
     } else {
       return;
     }

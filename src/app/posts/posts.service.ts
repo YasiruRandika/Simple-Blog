@@ -56,7 +56,7 @@ export class PostService {
 
   getPost(id : string) {
     console.log("Get Post Method Call");
-    return this.http.get<{ _id: string; title: string; content: string, imagePath:string}>(
+    return this.http.get<{ _id: string; title: string; content: string, imagePath:string, creator : string}>(
       "http://localhost:3000/api/posts/" + id
     );
   }
@@ -70,7 +70,7 @@ export class PostService {
       postData.append("content", content);
       postData.append("image", image, title);
     } else {
-      postData = {id : id, title  :title, content : content, imagePath : image};
+      postData = {id : id, title  :title, content : content, imagePath : image, creator : null};
     }
     this.http
     .put<{message:string,  imagePath:string}>("http://localhost:3000/api/posts/" + id, postData)

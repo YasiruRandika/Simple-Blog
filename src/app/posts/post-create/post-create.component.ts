@@ -23,7 +23,7 @@ export class PostCreateComponent implements OnInit {
   });;
   imagePreview : string | null | ArrayBuffer = '';
   private postId : string = '';
-  post : Post = {title: '', content : '', id:'', imagePath:''};
+  post : Post = {title: '', content : '', id:'', imagePath:'', creator : null};
 
   @Output()
   postCreated = new EventEmitter();
@@ -37,7 +37,7 @@ export class PostCreateComponent implements OnInit {
         this.postId = paraMap.get("postId")||'';
         this.isLoading = true;
         this.postService.getPost(this.postId).subscribe(postData => {
-          this.post = {id: postData._id, title: postData.title, content: postData.content, imagePath : postData.imagePath};
+          this.post = {id: postData._id, title: postData.title, content: postData.content, imagePath : postData.imagePath, creator : null};
           this.form.setValue( {
             'title': this.post.title,
             'content': this.post.content,
