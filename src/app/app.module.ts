@@ -22,7 +22,6 @@ import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { AuthInterceptor } from './auth/auth-interceptor';
-import { ErrorComponent } from './error/error.component';
 import { ErrorInterceptor } from './error-interceptor';
 
 @NgModule({
@@ -33,7 +32,6 @@ import { ErrorInterceptor } from './error-interceptor';
     HeaderComponent,
     LoginComponent,
     SignupComponent,
-    ErrorComponent,
   ],
   imports: [
     BrowserModule,
