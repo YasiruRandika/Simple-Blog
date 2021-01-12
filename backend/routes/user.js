@@ -26,6 +26,7 @@ router.post("/signup", (req, res, next) => {
     .catch(err => {
       console.log(err);
       return res.status(500).json({
+        message : 'User Already Exists',
         error : err
       })
     })
@@ -39,7 +40,7 @@ router.post("/login", (req, res, next) => {
     .then(user => {
       if(!user) {
         return res.status(401).json({
-          message : 'Auth Failed'
+          message : 'Invalid Authentication Credentials'
         });
       }
       fetchedUser = user;
@@ -51,7 +52,7 @@ router.post("/login", (req, res, next) => {
       if(!result) {
         console.log("Password Mismatch");
         return res.status(401).json({
-          message : 'Auth Failed'
+          message : 'Invalid Authentication Credentials'
         });
       }
 
@@ -65,7 +66,8 @@ router.post("/login", (req, res, next) => {
     })
     .catch(err => {
       res.status(401).json({
-        error : err
+        error : err,
+        message : 'Invalid Authentication Credentials'
       })
     })
   })

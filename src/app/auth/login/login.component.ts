@@ -20,11 +20,6 @@ export class LoginComponent implements OnInit {
     this.authSubscription = this.authService.getAuthStatusListner()
     .subscribe(response => {
       this.isLoading = false;
-      if(!response) {
-      if(this.router.url == '/login') {
-      this.snackBar.open("Login Credentials Mismatch", "Dismiss",{duration : 5000});
-      }
-      }
     })
   }
 
