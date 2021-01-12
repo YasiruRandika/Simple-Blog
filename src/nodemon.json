@@ -1,0 +1,6 @@
+{
+  "env" : {
+    "MONGO_ATLAS_PW" : "xBuMakWaLkfF65BH",
+    "JWT_KEY" : "blogtestprojectbyyasirurandikausingangular"
+  }
+}
